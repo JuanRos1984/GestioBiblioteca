@@ -1,4 +1,9 @@
 
+using GestionBiblioteca.Context;
+using GestionBiblioteca.Interfaces;
+using GestionBiblioteca.Models;
+using GestionBiblioteca.Services;
+
 namespace GestionBiblioteca
 {
     public class Program
@@ -13,6 +18,12 @@ namespace GestionBiblioteca
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
+
+            builder.Services.AddSqlServer<BibliotecaContext>(builder.Configuration.GetConnectionString("AppConnection"));
+
+            builder.Services.AddScoped(typeof (IRepository<>),typeof(Repository<>));
+
+            builder.Services.AddScoped<AutorServices>();
 
             var app = builder.Build();
 
