@@ -3,6 +3,9 @@ using GestionBiblioteca.Context;
 using GestionBiblioteca.Interfaces;
 using GestionBiblioteca.Models;
 using GestionBiblioteca.Services;
+using GestionBiblioteca.Utils;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 
 namespace GestionBiblioteca
 {
@@ -24,6 +27,11 @@ namespace GestionBiblioteca
             builder.Services.AddScoped(typeof (IRepository<>),typeof(Repository<>));
 
             builder.Services.AddScoped<AutorServices>();
+            builder.Services.AddScoped<LibroServices>();
+            builder.Services.AddScoped<CategoriaServices>();
+            builder.Services.AddScoped<UsuarioServices>();
+            builder.Services.AddScoped<EncryptionHelper>();
+
 
             var app = builder.Build();
 

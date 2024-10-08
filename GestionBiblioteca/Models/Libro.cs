@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using GestionBiblioteca.DTO;
+using System.ComponentModel.DataAnnotations;
 
 namespace GestionBiblioteca.Models
 {
@@ -8,8 +9,10 @@ namespace GestionBiblioteca.Models
         public int Id { get; set; }
         public string Titulo { get; set; }
         public string Descripcion { get; set; }
-        public DateOnly FechaPublicacion { get; set; }
+        public DateTime FechaPublicacion { get; set; }
         public bool Activo { get; set; }
+
+        
 
     }
 }
