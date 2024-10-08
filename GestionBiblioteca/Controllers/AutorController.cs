@@ -35,19 +35,25 @@ namespace GestionBiblioteca.Controllers
                 return NotFound();
         }
 
-        //[HttpPost]
-        //public async Task<IActionResult> Create(Autor autor)
-        //{
-        //    await service.Add(autor);
-        //    return Ok();
-        //}
+        [HttpPost]
+        public async Task<IActionResult> Create(Autor autor)
+        {
+            var result = await service.Create(autor);
+            if(result != null)
+                return Ok(result);
+            else
+                return UnprocessableEntity(new { mensaje = "Registro no insertado"});
+        }
 
-        //[HttpPut]
-        //public async Task<IActionResult> Update(Autor autor)
-        //{
-        //    await service.Update(autor);
-        //    return Ok();
-        //}
+        [HttpPut]
+        public async Task<IActionResult> Update(Autor autor)
+        {
+            var result = await service.Update(autor);
+            if (result)
+                return Ok(new { mensaje = "Registro actualizado exitosamente" });
+            else
+                return UnprocessableEntity(new { mensaje = "Registro no actualizado"});
+        }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(int id)

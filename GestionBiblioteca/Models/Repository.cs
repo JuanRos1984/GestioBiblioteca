@@ -1,5 +1,6 @@
 ﻿using GestionBiblioteca.Context;
 using GestionBiblioteca.Interfaces;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System.Linq.Expressions;
 
@@ -14,26 +15,41 @@ namespace GestionBiblioteca.Models
             this.context = context;
             dbSet = context.Set<T>();
         }
-        public async Task CreateAsync(T entity)
+        public async Task<T> CreateAsync(T entity)
         {
-            await dbSet.AddAsync(entity);
-            await context.SaveChangesAsync();
+            try
+            {
+                await dbSet.AddAsync(entity);
+                await context.SaveChangesAsync();
+                return entity;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Ha ocurrido un error al intentar esta operación",ex);
+            }
+            
         }
 
         public async Task<bool> DeleteAsync(int id)
         {
-            T entity = await GetByIdAsync(id);
-            if (entity != null)
+            try
             {
-                var registro = entity as Autor;
-                registro.Activo = false;
-                context.Entry(registro).State = EntityState.Modified;
-                await context.SaveChangesAsync();
-                return true;
+                T entity = await GetByIdAsync(id);
+                if (entity != null)
+                {
+                    var registro = entity as Autor;
+                    registro.Activo = false;
+                    context.Entry(registro).State = EntityState.Modified;
+                    await context.SaveChangesAsync();
+                    return true;
+                }
+                else
+                    return false;
             }
-            else
-                return false;
-            
+            catch (SqlException ex)
+            {
+                throw new Exception("Ha ocurrido un error al intentar esta operación", ex);
+            }
         }
 
         public async Task<IEnumerable<T>> GetAllAsync()
@@ -46,11 +62,20 @@ namespace GestionBiblioteca.Models
             return await dbSet.FindAsync(id);
         }
 
-        public async Task UpdateAsync(T entity)
+        public async Task<bool> UpdateAsync(T entity)
         {
-            dbSet.Attach(entity);
-            dbSet.Entry(entity).State = EntityState.Modified;
-            await context.SaveChangesAsync();
+            try
+            {
+                dbSet.Attach(entity);
+                dbSet.Entry(entity).State = EntityState.Modified;
+                await context.SaveChangesAsync();
+                return true;
+            }
+            catch (SqlException ex)
+            {
+                throw new Exception("Ha ocurrido un error al intentar esta operación", ex);
+            }
+            
         }
     }
 }

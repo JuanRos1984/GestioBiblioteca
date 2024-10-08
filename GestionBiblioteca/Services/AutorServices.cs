@@ -22,15 +22,15 @@ namespace GestionBiblioteca.Services
             return await _repository.GetByIdAsync(id);
         }
 
-        //public async Task Add(Autor autor)
-        //{
-        //    await _repository.CreateAsync(autor);
-        //}
+        public async Task<Autor> Create(Autor autor)
+        {
+            return await _repository.CreateAsync(autor);
+        }
 
-        //public async Task Update(Autor autor)
-        //{ 
-        //    await _repository.UpdateAsync(autor);
-        //}
+        public async Task<bool> Update(Autor autor)
+        {
+            return await _repository.UpdateAsync(autor);
+        }
 
         public async Task<bool> Delete(int id)
         { 
