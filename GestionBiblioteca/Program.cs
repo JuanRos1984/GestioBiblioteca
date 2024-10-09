@@ -27,7 +27,7 @@ namespace GestionBiblioteca
             builder.Services.AddScoped(typeof (IRepository<>),typeof(Repository<>));
 
             builder.Services.AddScoped<AutorServices>();
-            builder.Services.AddScoped<LibroServices>();
+            builder.Services.AddScoped<ILibro, LibroServices>();
             builder.Services.AddScoped<CategoriaServices>();
             builder.Services.AddScoped<UsuarioServices>();
             builder.Services.AddScoped<EncryptionHelper>();

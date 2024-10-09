@@ -15,5 +15,7 @@ namespace GestionBiblioteca.Context
         public DbSet<Libro> Libro { get; set; }
         public DbSet<Categoria> Categoria { get; set; }
         public DbSet<Usuario> Usuario { get; set; }
+        public DbSet<GetLibros> GetLibros { get; set; }
+
     }
 }
