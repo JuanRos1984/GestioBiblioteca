@@ -4,8 +4,12 @@ using GestionBiblioteca.Interfaces;
 using GestionBiblioteca.Models;
 using GestionBiblioteca.Services;
 using GestionBiblioteca.Utils;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
 
 namespace GestionBiblioteca
 {
@@ -27,11 +31,36 @@ namespace GestionBiblioteca
             builder.Services.AddScoped(typeof (IRepository<>),typeof(Repository<>));
 
             builder.Services.AddScoped<AutorServices>();
-            builder.Services.AddScoped<ILibro, LibroServices>();
             builder.Services.AddScoped<CategoriaServices>();
             builder.Services.AddScoped<UsuarioServices>();
             builder.Services.AddScoped<EncryptionHelper>();
+            builder.Services.AddScoped<ILibro, LibroServices>();
+            builder.Services.AddScoped<ILogin, LoginService>();
 
+            var jwtSettings = builder.Configuration.GetSection("Jwt");
+            var key = Encoding.ASCII.GetBytes(jwtSettings["Key"]);
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+            })
+            .AddJwtBearer(options =>
+            {
+                options.RequireHttpsMetadata = false;
+                options.SaveToken = true;
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidateAudience = true,
+                    ValidateIssuerSigningKey = true,
+                    ValidateLifetime = true,
+                    ValidIssuer = jwtSettings["Issuer"],
+                    ValidAudience = jwtSettings["Audience"],
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ClockSkew = TimeSpan.Zero // Para eliminar los minutos extra de tolerancia
+                };
+            });
 
             var app = builder.Build();
 

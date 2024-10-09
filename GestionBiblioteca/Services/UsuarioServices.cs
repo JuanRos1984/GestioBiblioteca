@@ -1,4 +1,5 @@
-﻿using GestionBiblioteca.Interfaces;
+﻿using GestionBiblioteca.DTO;
+using GestionBiblioteca.Interfaces;
 using GestionBiblioteca.Models;
 using GestionBiblioteca.Utils;
 
@@ -14,17 +15,17 @@ namespace GestionBiblioteca.Services
             this._repository = _repository;
             this.encryptionHelper = encryptionHelper;
         }
-
         public async Task<IEnumerable<Usuario>> Get()
         {
             var usuarios = await _repository.GetAllAsync();
+
             var result = usuarios.Select(a => new Usuario
             {
                 Id = a.Id,
                 Email = a.Email,
                 Clave = string.Empty,
                 Activo = a.Activo,
-            });
+            }).ToList();
             return result;
         }
 
