@@ -60,7 +60,29 @@ namespace GestionBiblioteca.Services
             return result;
         }
 
-        public async Task<Response<GetLibros>> GetLibros(LibroFiltroDTO param)
+        public async Task<Response<GetLibros>> GetAllLibros()
+        {
+            var result = new Response<GetLibros>();
+            try
+            {
+                var libro = await context.GetLibros.FromSqlRaw("[dbo].[GetLibros]").ToListAsync();
+
+                if (libro.Any())
+                    result.DataList = libro;
+                else
+                {
+                    result.Message = "No se encontraron registros";
+
+                }
+            }
+            catch (Exception ex)
+            {
+                result.Errors.Add(ex.Message);
+            }
+            return result;
+        }
+
+        public async Task<Response<GetLibros>> GetLibroFiltro(LibroFiltroDTO param)
         {
             var result = new Response<GetLibros>();
             try

@@ -1,6 +1,7 @@
 ﻿using GestionBiblioteca.Interfaces;
 using GestionBiblioteca.Models;
 using GestionBiblioteca.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -8,6 +9,7 @@ namespace GestionBiblioteca.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles="Bibliotecario")]
     public class AutorController : ControllerBase
     {
         readonly AutorServices service;

@@ -8,6 +8,7 @@ namespace GestionBiblioteca.Models
         public int Id { get; set; }
         public string Email{ get; set; }
         public string Clave{ get; set; }
+        public int IdRol { get; set; }
         public bool Activo{ get; set; }
     }
 }

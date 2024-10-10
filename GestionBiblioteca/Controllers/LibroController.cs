@@ -2,6 +2,7 @@
 using GestionBiblioteca.Interfaces;
 using GestionBiblioteca.Models;
 using GestionBiblioteca.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,6 +10,7 @@ namespace GestionBiblioteca.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize(Roles="Bibliotecario")]
     public class LibroController : ControllerBase
     {
         readonly ILibro service;
@@ -17,10 +19,20 @@ namespace GestionBiblioteca.Controllers
             this.service = service;
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Get(LibroFiltroDTO param)
+        [HttpGet("Todos")]
+        public async Task<IActionResult> Get()
         {
-            var libros = await service.GetLibros(param);
+            var libros = await service.GetAllLibros();
+            if (libros.DataList.Count > 0)
+                return Ok(libros);
+            else
+                return NotFound();
+        }
+
+        [HttpGet("FiltroLibros")]
+        public async Task<IActionResult> Get([FromQuery] LibroFiltroDTO param)
+        {
+            var libros = await service.GetLibroFiltro(param);
             if (libros.DataList.Count>0)
                 return Ok(libros);
             else

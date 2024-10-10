@@ -15,9 +15,9 @@ namespace GestionBiblioteca.Controllers
             this.login = login;
         }
         [HttpPost("Acceder")]
-        public IActionResult PostVerificar(LoginDTO model)
+        public async Task<IActionResult> PostVerificar(LoginDTO model)
         {
-            var result = login.Login(model);
+            var result = await login.Login(model);
             return Ok(result);
 
         }
