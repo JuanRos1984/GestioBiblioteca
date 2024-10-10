@@ -25,6 +25,7 @@ namespace GestionBiblioteca.Services
                 Email = a.Email,
                 Clave = string.Empty,
                 Activo = a.Activo,
+                IdRol = a.IdRol
             }).ToList();
             return result;
         }
