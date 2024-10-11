@@ -1,4 +1,4 @@
-# GestioBiblioteca
+# GestionBiblioteca
 
 Este repositorio contiene una API para la gestión de libros, autores y categorías en una biblioteca. La API está desarrollada utilizando Web API con .NET 8 y Entity Framework 8.
 
