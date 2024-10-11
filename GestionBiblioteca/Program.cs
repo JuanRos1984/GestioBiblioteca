@@ -103,6 +103,8 @@ namespace GestionBiblioteca
                 app.UseSwaggerUI();
             }
 
+            app.UseCors(a=>a.AllowAnyOrigin().AllowAnyHeader().AllowAnyMethod());
+
             app.UseHttpsRedirection();
 
             app.UseAuthorization();
